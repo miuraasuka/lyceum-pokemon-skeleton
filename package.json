@@ -32,5 +32,6 @@
     "start": "node .output/server/index.mjs",
     "start:express": "dotenv -e .env -- node .tsup-output/express.js",
     "update": "npm-check-updates --deep --upgrade && npm dedupe"
-  }
+  },
+  "type": "module"
 }

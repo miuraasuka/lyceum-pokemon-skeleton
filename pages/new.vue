@@ -1,30 +1,125 @@
-<script setup></script>
+<script setup>
+
+const router = useRouter();
+
+const config = useRuntimeConfig();
+
+const trainerName = ref("");
+
+const safeTrainerName = computed(() => trimAvoidCharacters(trainerName.value));
+
+const onSubmit = async () => {
+
+  const response = await $fetch("/api/trainer", {
+
+    baseURL: config.public.backendOrigin,
+
+    method: "POST",
+
+    headers: {
+
+      "Content-Type": "application/json",
+
+    },
+
+    body: JSON.stringify({
+
+      name: safeTrainerName.value,
+
+    }),
+
+  }).catch((e) => e);
+
+  if (response instanceof Error) return;
+
+  router.push(`/trainer/${safeTrainerName.value}`);
+
+};
+
+</script>
+
+ 
 
 <template>
+
   <div>
+
     <h1>あたらしくはじめる</h1>
-    <form @submit.prevent></form>
+
+    <p>では はじめに きみの なまえを おしえて もらおう！</p>
+
+    <form @submit.prevent>
+
+      <div class="item">
+
+      <label for="name">なまえ</label>
+
+      <span id="name-description"
+
+      >とくていの もじは とりのぞかれるぞ！</span>
+
+      <input
+
+        id="name"
+
+        v-model="trainerName"
+
+        aria-decribedby="name-description"
+
+        @keydown.enter="onSubmit"
+
+      />
+
+      <GamifyButton type="button" @click="onSubmit">けってい</GamifyButton>
+
+    </div>
+
+  </form>
+
   </div>
+
 </template>
 
+ 
+
 <style scoped>
+
 form {
+
   border-radius: 0.5rem;
+
   border: solid 4px #555;
+
   padding: 1.5rem 3rem;
+
 }
+
+ 
 
 form > :not(:last-child) {
+
   display: block;
+
   margin-bottom: 1rem;
+
 }
 
+ 
+
 .item > label,
+
 .item > span {
+
   display: block;
+
   margin-bottom: 0.25rem;
+
 }
+
 .item > span {
+
   font-size: 0.875rem;
+
 }
+
 </style>
