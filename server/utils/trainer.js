@@ -73,17 +73,11 @@ export const findTrainer = async (name) => {
 export const upsertTrainer = async (name, trainer) => {
 
   const result = await s3Client.send(
-
     new PutObjectCommand({
-
       Bucket: config.bucketName,
-
       Key: `${name}.json`,
-
       Body: JSON.stringify({ name: "", pokemons: [], ...trainer }),
-
     }),
-
   );
 
   return result;
